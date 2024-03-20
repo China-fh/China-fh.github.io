@@ -1,1 +1,111 @@
-<h1>网站测试 Web Test</h1>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>时钟罗盘</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			font-size: 14px;
+			background: black;
+			color: gainsboro;
+		}
+		.center{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			width: 18px;
+			height: 18px;
+		}
+		.center > div{
+			transform-origin: left center;
+			/* display: none; */
+			position: absolute;
+			height: 18px;
+			transition: 0.5s transform;
+			text-shadow: 0 0 20px orange;
+		}
+		p{	
+			position: absolute;
+			transform-origin: left center;
+			width: 50px;
+			text-align: center;
+			transition: 0.5s color;
+		}
+		.ck{
+			color: yellow;
+		}
+		
+		
+		.m{
+			color: rgba(255, 0, 0, .8);
+		}
+		.d{
+			color: rgba(255, 0, 0, 1);
+		}
+		.h{
+			color: rgba(255, 0, 0, .8);
+		}
+		.mm{
+			color: rgba(255, 0, 0, .8);
+		}
+		.center .s{
+			color: rgba(255, 0, 0, .8);
+		}
+	</style>
+</head>
+<body>
+	<div class="center">
+		<div class="m"></div>
+		<div class="d"></div>
+		<div class="h"></div>
+		<div class="mm"></div>
+		<div class="s"></div>
+	</div>
+	<script>
+		let is = 0
+		let m = document.querySelector('.m')
+		let d = document.querySelector('.d')
+		let h = document.querySelector('.h')
+		let mm = document.querySelector('.mm')
+		let s = document.querySelector('.s')
+		addText(m,12,30,'月')
+		addText(d,31,65,'日')
+		addText(h,24,100,'时')
+		addText(mm,60,135,'分',true)
+		addText(s,60,170,'秒')
+        alert(s);
+		function addText(dom,max,trans,txt,ck){
+			for(let i = 0; i < max; i++){
+				let pm = document.createElement('p')
+				pm.innerHTML = (ck ? i : i+1)+txt
+				pm.style.transform = `rotate(${i*(360/max)}deg) translateX(${trans}px)`
+				dom.appendChild(pm)
+			}
+		}
+		
+		setInterval(()=>{
+			    let date = new Date()
+				setTime(m,date.getMonth(),12)
+				setTime(d,date.getDate(),31)
+				setTime(h,date.getHours(),24)
+				setTime(mm,date.getMinutes()+1,60)
+				setTime(s,date.getSeconds(),60)
+		},1000)
+		
+		function setTime(dom,timer,max){
+			let p = dom.querySelectorAll('p')
+			dom.style.transform = 'rotate('+(dom==m ? timer : timer -1)*(-360/max)+'deg)'
+			p.forEach(v=>{
+				v.classList.remove('ck')
+			})
+			p[dom==m ? timer : timer-1].classList.add('ck')
+		}
+	</script>
+</body>
+  </html>
